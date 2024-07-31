@@ -17,7 +17,7 @@ export class DetailArticleComponent {
   constructor(public articlesService:ArticlesService, private router:Router, private route:ActivatedRoute){}
 
   ngOnInit():void{
-    this.id = this.route.snapshot.params['postId'];
+    this.id = this.route.snapshot.params['id'];
     this.articlesService.find(this.id).subscribe((data:Article)=>{
       this.article= data;
     })

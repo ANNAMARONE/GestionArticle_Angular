@@ -8,10 +8,10 @@ import { DetailArticleComponent } from './detail-article/detail-article.componen
 export const routes: Routes = [
   { path: 'article/afficher', component: ArticleComponent },
   { path: 'article/ajouter', component: AjoutArticleComponent },
-  { path: 'article/:id/view', component: DetailArticleComponent }, // Correction ici
-  { path: 'article/:id/edit', component: ModifierArticleComponent }, // Correction ici
+  { path: 'article/:id/view', component: DetailArticleComponent }, 
+  { path: 'article/:id/edit', component: ModifierArticleComponent }, 
   { path: 'article', redirectTo: 'article/afficher', pathMatch: 'full' },
-  { path: '', redirectTo: 'article/afficher', pathMatch: 'full' } // Assurez-vous que cela redirige vers `article/afficher` pour la racine
+  { path: '', redirectTo: 'article/afficher', pathMatch: 'full' } 
 ];
 
 @NgModule({
