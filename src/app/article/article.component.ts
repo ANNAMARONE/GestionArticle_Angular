@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ArticlesService } from '../articles.service';
 import { Article } from '../article';
 import { Router } from '@angular/router';
-
+import{Comment} from '../comment'
 @Component({
   selector: 'app-article',
   standalone: true,
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class ArticleComponent implements OnInit {
   articles: Article[] = [];
+  comments: { [key: number]: Comment[] } = {};
   form!: FormGroup;
 
   constructor(public articlesService: ArticlesService, private router: Router) {}
@@ -67,4 +68,10 @@ export class ArticleComponent implements OnInit {
       localStorage.setItem('articles', JSON.stringify(this.articles)); 
     });
   }
+  loadComments(postId:number):void{
+    this.articlesService.getComments(postId).subscribe((data:Comment[])=>{
+      this.comments[postId]=data
+    })
+  }
 }
+

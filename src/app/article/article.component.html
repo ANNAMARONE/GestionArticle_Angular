@@ -22,11 +22,23 @@
                 <a [routerLink]="['/article', article.id, 'view']" class="btn btn-info">View</a>
                 <a [routerLink]="['/article', article.id, 'edit']" class="btn btn-primary">Edit</a>
                 <button class="btn btn-danger" type="button" (click)="suprimerArticle(article.id)">Delete</button>
+                <button class="btn btn-secondary" type="button" (click)="loadComments(article.id)">Show Comments</button>
+                <div *ngIf="comments[article.id]">
+                  <h3>Comments</h3>
+                  <div *ngFor="let comment of comments[article.id]">
+                    <p><strong>{{ comment.name }}</strong> ({{ comment.email }})</p>
+                    <p>{{ comment.body }}</p>
+                  </div>
+                </div>
+              
+                
         </td>
+        
         </tr>
       </tbody>
     </table>
   </div>
+  
   <div class="container">
     <h1 class="text-canter">ajouter un article</h1>
    
@@ -49,4 +61,5 @@
         <button class="btn btn-primary" type="submit" [disabled]="!form.valid">ajouter</button>
     </form>
     </div>
+    
     
