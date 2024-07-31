@@ -1,0 +1,29 @@
+
+
+<div class="container">
+    <h1 class="text-center">liste des articles</h1>
+    <a href="article/ajouter" class="btn btn-success">ajouter</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Title</th>
+          <th>description</th>
+          <th width="250px">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of articles">
+            <td>{{article.id}}</td>
+            <td>{{article.title}}</td>
+            <td>{{article.body}}</td>
+            
+            <td>
+                <a [routerLink]="['/article', article.id, 'view']" class="btn btn-info">View</a>
+                <a [routerLink]="['/article', article.id, 'edit']" class="btn btn-primary">Edit</a>
+                <button class="btn btn-danger" type="button" (click)="suprimerArticle(article.id)">Delete</button>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
