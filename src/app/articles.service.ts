@@ -2,13 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Article } from './article';
-import { Comment } from './comment'; // Importer l'interface Comment
+import { Comment } from './comment'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticlesService {
-  private apiURL = "https://jsonplaceholder.typicode.com";
+  private apiURL = "https://jsonplaceholder.typicode.com/";
   
   private httpOptions = {
     headers: new HttpHeaders({

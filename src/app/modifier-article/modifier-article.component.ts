@@ -20,10 +20,10 @@ export class ModifierArticleComponent implements OnInit {
   constructor(public articlesService: ArticlesService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params['id']; // Correction ici
+    this.id = this.route.snapshot.params['id']; 
     this.articlesService.find(this.id).subscribe((data: Article) => {
       this.article = data;
-      this.form.patchValue(this.article); // Remplir le formulaire avec les données de l'article
+      this.form.patchValue(this.article); 
     });
 
     this.form = new FormGroup({
@@ -35,12 +35,13 @@ export class ModifierArticleComponent implements OnInit {
   get f() {
     return this.form.controls;
   }
+  
 
   submit(): void {
     console.log(this.form.value);
     this.articlesService.update(this.id, this.form.value).subscribe((res: any) => {
       alert("Data Updated Successfully ☺");
-      this.router.navigateByUrl('/article/afficher'); // Correction ici
+      this.router.navigateByUrl('/article/afficher'); 
     });
   }
 }
