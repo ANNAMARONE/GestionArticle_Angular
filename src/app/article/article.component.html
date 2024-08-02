@@ -1,0 +1,124 @@
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <div id="modalalite">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ajouter un article</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container" >
+        
+         <fieldset>
+          <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="form-group">
+          <label for="title">Titre</label>
+          <input type="text" id="title" formControlName="title" class="form-control" placeholder="titre">
+          <div *ngIf="f['title'].touched && f['title'].invalid" class="alert alert-danger">
+          <div *ngIf="f['title'].errors && f['title'].errors['required']"></div>
+          </div>
+          </div>
+          
+          <div class="form-group">
+              <label for="body">Description</label>
+              <input type="text" id="body" formControlName="body" class="form-control" placeholder="saisir la description">
+              <div *ngIf="f['body'].touched && f['body'].invalid" class="alert alert-danger">
+              <div *ngIf="f['body'].errors && f['body'].errors['required']"></div>
+              </div>
+              </div>
+              <button id="ajouter" class="btn btn-primary" type="submit" [disabled]="!form.valid">ajouter</button>
+          </form>
+        </fieldset>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+    <div class="site">
+      <div class="navigation-outer">
+          <nav role="navigation" class="navigation-bar group">
+              <ul class="site-navigation">
+                  <li>
+                      <a class="active" href="#">Accueil</a>
+                  </li>
+                  <li>
+                      <a href="#">Article</a>
+                  </li>
+                 
+              </ul>
+              <div role="search" class="site-search">
+                  <form action="#" method="post">
+                      <div class="search-field">
+                          <label class="hide-vis" for="search">Search</label>
+                          <input type="search" name="search" id="search">
+                          <button class="hide-text" type="submit">Search</button>
+                      </div>
+                  </form>
+              </div>
+          </nav>
+      </div>
+
+
+      <section role="main" class="site-content">
+         
+        <button id="boutonAjout" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Ajouter
+        </button>
+          <section class="latest-posts">
+              <h2>Les articles</h2>
+              
+                <div class="row" id="cart1">
+                  <div class="col-md-4" *ngFor="let article of articles" >
+                <div class="blog-card blog-card-blog" id="cart2" >
+                  
+                  <div class="blog-table">
+                   
+                      <h4 class="blog-card-caption">
+                          <a href="#">{{article.title}}</a>
+                      </h4>
+                      <p class="blog-card-description">{{article.body}}</p>
+                      <div class="ftr">
+                          <div class="author">
+                            <a [routerLink]="['/article', article.id, 'view']" class="btn btn-info"><i class="fa-solid fa-eye" style="color: #FFD43B;"></i></a>
+                            <a [routerLink]="['/article', article.id, 'edit']" class="btn btn-primary"><i class="fa-solid fa-pen-to-square" style="color: #FFD43B;"></i></a>
+                            <button class="btn btn-danger" type="button" (click)="suprimerArticle(article.id)"><i class="fa-solid fa-trash" style="color: #FFD43B;"></i></button>
+                          
+                          </div>
+                          <div class="stats"> <i class="far fa-clock"></i> 10 min </div>
+                      </div>
+                  </div>
+              </div>
+              </div>
+                </div>
+            
+          </section>
+      
+          <section class="get-in-touch group">
+              
+              <div class="get-in-touch-form">
+              
+              </div>
+          </section>
+      </section>
+          
+      <div class="footer-outer">
+        
+          <footer role="content-info" class="site-footer">
+             
+          </footer>
+      </div>
+  </div>
+       
+
+ 
+  
+  
+  
