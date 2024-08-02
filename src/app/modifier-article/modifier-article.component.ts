@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Article } from '../article';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { ArticlesService } from '../articles.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-modifier-article',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule,CommonModule],
   templateUrl: './modifier-article.component.html',
   styleUrls: ['./modifier-article.component.css']
 })

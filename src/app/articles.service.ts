@@ -8,7 +8,7 @@ import { Comment } from './comment';
   providedIn: 'root'
 })
 export class ArticlesService {
-  private apiURL = "https://jsonplaceholder.typicode.com/";
+  private apiURL = "https://jsonplaceholder.typicode.com";
   
   private httpOptions = {
     headers: new HttpHeaders({

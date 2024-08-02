@@ -5,8 +5,8 @@ import { RouterLink } from '@angular/router';
 import { ArticlesService } from '../articles.service';
 import { Article } from '../article';
 import { Router } from '@angular/router';
-import{Comment} from '../comment';
-import Swal from 'sweetalert2';
+import { Comment } from '../comment';
+
 @Component({
   selector: 'app-article',
   standalone: true,
@@ -19,15 +19,6 @@ export class ArticleComponent implements OnInit {
   comments: { [key: number]: Comment[] } = {};
   form!: FormGroup;
 
-  isModalVisible = false;
-
-  openModal() {
-    this.isModalVisible = true;
-  }
-
-  closeModal() {
-    this.isModalVisible = false;
-  }
   constructor(public articlesService: ArticlesService, private router: Router) {}
 
   ngOnInit(): void {
@@ -39,76 +30,73 @@ export class ArticleComponent implements OnInit {
   }
 
   loadArticles(): void {
-    if (typeof window !== 'undefined') {
-      const storedArticles = localStorage.getItem('articles');
-      if (storedArticles) {
+    
+    const storedArticles = localStorage.getItem('articles');
+    if (storedArticles) {
+      try {
         this.articles = JSON.parse(storedArticles);
-      } else {
-        this.articlesService.getAll().subscribe((data: Article[]) => {
-          this.articles = data;
-         
-          localStorage.setItem('articles', JSON.stringify(this.articles));
-        });
+      } catch (error) {
+        console.error('Erreur de parsing des articles depuis localStorage', error);
+        this.fetchArticlesFromApi();
       }
     } else {
-      this.articlesService.getAll().subscribe((data: Article[]) => {
-      
-        this.articles = data;
-      });
+      this.fetchArticlesFromApi();
     }
   }
-  
+
+  fetchArticlesFromApi(): void {
+    this.articlesService.getAll().subscribe({
+      next: (data: Article[]) => {
+        this.articles = data;
+        localStorage.setItem('articles', JSON.stringify(this.articles));
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des articles', error);
+      }
+    });
+  }
 
   get f() {
     return this.form.controls;
   }
 
   submit(): void {
-    console.log(this.form.value);
-    this.articlesService.create(this.form.value).subscribe((res: any) => {
-      
-    
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Article ajouté avec succès ☺",
-        showConfirmButton: false,
-        timer: 1500
+    if (this.form.valid) {
+      this.articlesService.create(this.form.value).subscribe({
+        next: (res: Article) => {
+          alert("Article ajouté avec succès ☺");
+          this.form.reset();
+          this.articles.push(res);
+          localStorage.setItem('articles', JSON.stringify(this.articles));
+        },
+        error: (error) => {
+          console.error('Erreur lors de l\'ajout de l\'article', error);
+        }
       });
-      this.form.reset(); 
-      this.articles.push(res); 
-      localStorage.setItem('articles', JSON.stringify(this.articles));
-    });
+    }
   }
 
   suprimerArticle(id: number): void {
-    this.articlesService.delete(id).subscribe(() => {
-      this.articles = this.articles.filter(article => article.id !== id);
-      Swal.fire({
-        title: "Es-tu sûr?",
-        text: "Vous ne pourrez pas revenir en arrière !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Oui, supprime-le !"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "supprimer!",
-            text: "Article supprimé avec succès !.",
-            icon: "success"
-          });
-        }
-      });
-      localStorage.setItem('articles', JSON.stringify(this.articles)); 
+    this.articlesService.delete(id).subscribe({
+      next: () => {
+        this.articles = this.articles.filter(article => article.id !== id);
+        alert('Article supprimé avec succès !');
+        localStorage.setItem('articles', JSON.stringify(this.articles));
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression de l\'article', error);
+      }
     });
   }
-  loadComments(postId:number):void{
-    this.articlesService.getComments(postId).subscribe((data:Comment[])=>{
-      this.comments[postId]=data
-    })
-  }
-  
-}
 
+  loadComments(postId: number): void {
+    this.articlesService.getComments(postId).subscribe({
+      next: (data: Comment[]) => {
+        this.comments[postId] = data;
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des commentaires', error);
+      }
+    });
+  }
+}
