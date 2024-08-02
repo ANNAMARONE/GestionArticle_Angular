@@ -2,12 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 
+import { Article } from './article';
+import { Comment } from './comment'; 
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticlesService {
-  private apiURL = 'http://127.0.0.1:8000/api/articles';
+apiURL = "https://jsonplaceholder.typicode.com";
+
   
   private httpOptions = {
     headers: new HttpHeaders({
@@ -18,42 +22,54 @@ export class ArticlesService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<any> {
-    return this.httpClient.get(this.apiURL)
+
+    return this.httpClient.get(this.apiURL + '/posts/')
+
       .pipe(
         catchError(this.errorHandler)
       );
   }  
 
   create(article: Article): Observable<any> {
-    return this.httpClient.post(this.apiURL , JSON.stringify(article), this.httpOptions)
+
+    return this.httpClient.post(this.apiURL + '/posts/', JSON.stringify(article), this.httpOptions)
+
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   find(id: number): Observable<any> {
-    return this.httpClient.get(this.apiURL +id)
+
+    return this.httpClient.get(this.apiURL + '/posts/' + id)
+
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   update(id: number, article: Article): Observable<any> {
-    return this.httpClient.put(this.apiURL +id, JSON.stringify(article), this.httpOptions)
+
+    return this.httpClient.put(this.apiURL + '/posts/' + id, JSON.stringify(article), this.httpOptions)
+
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   delete(id: number): Observable<any> {
-    return this.httpClient.delete(this.apiURL + id, this.httpOptions)
+
+    return this.httpClient.delete(this.apiURL + '/posts/' + id, this.httpOptions)
+
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   getComments(postId: number): Observable<Comment[]> {
-    return this.httpClient.get<Comment[]>(`${this.apiURL}${postId}/comments`)
+
+    return this.httpClient.get<Comment[]>(`${this.apiURL}/posts/${postId}/comments`)
+
       .pipe(catchError(this.errorHandler));
   }
 

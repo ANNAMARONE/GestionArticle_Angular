@@ -1,0 +1,60 @@
+
+<div *ngIf="!article">
+  <p>Chargement des détails de l'article...</p>
+</div>
+<div class="container" *ngIf="article">
+  <div>
+    <strong>ID:</strong><p>{{article.id}}</p>
+  </div>
+  <div>
+    <strong>Title:</strong><p>{{article.title}}</p>
+  </div>
+  <div>
+    <strong>Post:</strong><p>{{article.body}}</p>
+  </div>
+  
+  <button class="btn btn-secondary" type="button" (click)="loadComments(article.id)">Afficher les Commentaires</button>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Responsive Vertical Timeline</title>
+  
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,400italic,700,900' rel='stylesheet' type='text/css'>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- // Fonts -->
+</head>
+<body>
+  <!-- Vertical Timeline -->
+  <section id="conference-timeline" *ngIf="comments[article.id]">
+    <div class="timeline-start">commentaires</div>
+    <div class="conference-center-line"></div>
+    <div class="conference-timeline-content" *ngFor="let comment of comments[article.id]" >
+      <!-- Article -->
+      <div class="timeline-article">
+        <div class="content-left-container">
+          <div class="content-left">
+            <p>{{ comment.body }} <span class="article-number">{{ comment.id }}</span></p>
+          </div>
+         
+        </div>
+        <div class="content-right-container">
+          <div class="content-right">
+            <p>{{ comment.name }}<span class="article-number">{{ comment.id }}</span></p>
+          </div>
+          <span class="timeline-author">{{ comment.email }}</span>
+        </div>
+        <div class="meta-date">
+          <span class="date">{{article.id}}</span>
+          <span class="month">APR</span>
+        </div>
+      </div>
+   
+    </div>
+    <div class="timeline-end"></div>
+  </section>
+  <!-- // Vertical Timeline -->
+</body>
+</html>
+</div>

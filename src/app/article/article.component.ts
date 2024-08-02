@@ -22,13 +22,29 @@ export class ArticleComponent implements OnInit {
   constructor(public articlesService: ArticlesService, private router: Router) {}
 
   ngOnInit(): void {
-   
+
+    this.loadArticles();
+
     this.form = new FormGroup({
       title: new FormControl('', [Validators.required]),
       body: new FormControl('', Validators.required),
     });
   }
 
+  loadArticles(): void {
+    
+    const storedArticles = localStorage.getItem('articles');
+    if (storedArticles) {
+      try {
+        this.articles = JSON.parse(storedArticles);
+      } catch (error) {
+        console.error('Erreur de parsing des articles depuis localStorage', error);
+        this.fetchArticlesFromApi();
+      }
+    } else {
+      this.fetchArticlesFromApi();
+    }
+  }
 
 
   fetchArticlesFromApi(): void {

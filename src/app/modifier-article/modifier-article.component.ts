@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Article } from './article';
+
+import { Article } from '../article';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
