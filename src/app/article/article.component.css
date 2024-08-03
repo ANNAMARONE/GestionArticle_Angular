@@ -36,7 +36,13 @@ a {
   margin: 0 auto;
   width: max-content;
 }
-
+#boutonAjout{
+  background-color: #fafafa;
+  color: #292f36;
+  font-weight: bolder;
+ font-size: 16px;
+ border: none;
+}
 .card {
   font-family: 'Heebo';
   --bg-filter-opacity: 0.5;
