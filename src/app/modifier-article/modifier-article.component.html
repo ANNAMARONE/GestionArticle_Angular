@@ -1,8 +1,8 @@
 
 
   <div class="container">
-    <h1 class="text-center">Update Post here.. ☺</h1>
-    <a href="#" routerLink="article/afficher" class=" btn btn-warning">Back</a>
+    <h1 class="text-center">Modifier l'article</h1>
+    <a href="#" routerLink="article/afficher" class=" btn btn-warning">Retoure</a>
   
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-group">
@@ -19,7 +19,7 @@
           <div *ngIf="f['body'].errors && f['body'].errors['required']">Post is Required.</div>
         </div>
       </div>
-      <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Update</button>
+      <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Modifier</button>
     </form>
   </div>
   
