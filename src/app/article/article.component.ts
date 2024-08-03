@@ -6,6 +6,8 @@ import { ArticlesService } from '../articles.service';
 import { Article } from '../article';
 import { Router } from '@angular/router';
 import { Comment } from '../comment';
+import { PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-article',
@@ -18,11 +20,17 @@ export class ArticleComponent implements OnInit {
   articles: Article[] = [];
   comments: { [key: number]: Comment[] } = {};
   form!: FormGroup;
+  private platformId: Object;
 
-  constructor(public articlesService: ArticlesService, private router: Router) {}
+  constructor(
+    public articlesService: ArticlesService,
+    private router: Router,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.platformId = platformId;
+  }
 
   ngOnInit(): void {
-
     this.loadArticles();
 
     this.form = new FormGroup({
@@ -31,36 +39,39 @@ export class ArticleComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.form.controls;
+  }
+
   loadArticles(): void {
-    
-    const storedArticles = localStorage.getItem('articles');
-    if (storedArticles) {
-      try {
-        this.articles = JSON.parse(storedArticles);
-      } catch (error) {
-        console.error('Erreur de parsing des articles depuis localStorage', error);
+    if (isPlatformBrowser(this.platformId)) {
+      const storedArticles = localStorage.getItem('articles');
+      if (storedArticles) {
+        try {
+          this.articles = JSON.parse(storedArticles);
+        } catch (error) {
+          console.error('Erreur de parsing des articles depuis localStorage', error);
+          this.fetchArticlesFromApi();
+        }
+      } else {
         this.fetchArticlesFromApi();
       }
     } else {
       this.fetchArticlesFromApi();
     }
   }
-
-
   fetchArticlesFromApi(): void {
     this.articlesService.getAll().subscribe({
       next: (data: Article[]) => {
         this.articles = data;
-        localStorage.setItem('articles', JSON.stringify(this.articles));
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('articles', JSON.stringify(this.articles));
+        }
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des articles', error);
       }
     });
-  }
-
-  get f() {
-    return this.form.controls;
   }
 
   submit(): void {
@@ -70,7 +81,9 @@ export class ArticleComponent implements OnInit {
           alert("Article ajouté avec succès ☺");
           this.form.reset();
           this.articles.push(res);
-          localStorage.setItem('articles', JSON.stringify(this.articles));
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('articles', JSON.stringify(this.articles));
+          }
         },
         error: (error) => {
           console.error('Erreur lors de l\'ajout de l\'article', error);
@@ -79,12 +92,14 @@ export class ArticleComponent implements OnInit {
     }
   }
 
-  suprimerArticle(id: number): void {
+  supprimerArticle(id: number): void {
     this.articlesService.delete(id).subscribe({
       next: () => {
         this.articles = this.articles.filter(article => article.id !== id);
         alert('Article supprimé avec succès !');
-        localStorage.setItem('articles', JSON.stringify(this.articles));
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('articles', JSON.stringify(this.articles));
+        }
       },
       error: (error) => {
         console.error('Erreur lors de la suppression de l\'article', error);
@@ -103,6 +118,3 @@ export class ArticleComponent implements OnInit {
     });
   }
 }
-
-
-
