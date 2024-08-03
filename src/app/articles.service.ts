@@ -18,6 +18,7 @@ apiURL = "https://jsonplaceholder.typicode.com";
       'Content-Type': 'application/json'
     })
   };
+  articles: any;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -31,13 +32,11 @@ apiURL = "https://jsonplaceholder.typicode.com";
   }  
 
   create(article: Article): Observable<any> {
-
-    return this.httpClient.post(this.apiURL + '/posts/', JSON.stringify(article), this.httpOptions)
-
-      .pipe(
-        catchError(this.errorHandler)
-      );
-  }
+    return this.httpClient.post(this.apiURL + '/posts', JSON.stringify(article), this.httpOptions)
+        .pipe(
+            catchError(this.errorHandler)
+        );
+}
 
   find(id: number): Observable<any> {
 

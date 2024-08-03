@@ -21,6 +21,7 @@ export class ArticleComponent implements OnInit {
   comments: { [key: number]: Comment[] } = {};
   form!: FormGroup;
   private platformId: Object;
+  private lastId: number = 100; // Initialisez le dernier ID utilisé
 
   constructor(
     public articlesService: ArticlesService,
@@ -49,6 +50,7 @@ export class ArticleComponent implements OnInit {
       if (storedArticles) {
         try {
           this.articles = JSON.parse(storedArticles);
+          this.updateLastId();
         } catch (error) {
           console.error('Erreur de parsing des articles depuis localStorage', error);
           this.fetchArticlesFromApi();
@@ -60,10 +62,12 @@ export class ArticleComponent implements OnInit {
       this.fetchArticlesFromApi();
     }
   }
+
   fetchArticlesFromApi(): void {
     this.articlesService.getAll().subscribe({
       next: (data: Article[]) => {
-        this.articles = data;
+        this.articles = [...this.articles, ...data];
+        this.updateLastId();
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('articles', JSON.stringify(this.articles));
         }
@@ -76,11 +80,18 @@ export class ArticleComponent implements OnInit {
 
   submit(): void {
     if (this.form.valid) {
-      this.articlesService.create(this.form.value).subscribe({
+      const newArticle: Partial<Article> = {
+        ...this.form.value,
+        id: this.generateUniqueId() 
+      };
+      console.log('Article à envoyer:', newArticle);
+  
+      this.articlesService.create(newArticle as Article).subscribe({
         next: (res: Article) => {
+          console.log('Réponse de l\'API:', res);
           alert("Article ajouté avec succès ☺");
           this.form.reset();
-          this.articles.push(res);
+          this.articles.push(newArticle as Article);
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('articles', JSON.stringify(this.articles));
           }
@@ -90,6 +101,16 @@ export class ArticleComponent implements OnInit {
         }
       });
     }
+  }
+
+  generateUniqueId(): number {
+    this.lastId += 1;
+    return this.lastId;
+  }
+
+  updateLastId(): void {
+    const maxId = Math.max(...this.articles.map(article => article.id), this.lastId);
+    this.lastId = maxId;
   }
 
   supprimerArticle(id: number): void {
