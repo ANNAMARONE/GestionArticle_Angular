@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Article } from '../article';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import Swal from 'sweetalert2'
 import { ArticlesService } from '../articles.service';
 import { CommonModule } from '@angular/common';
 @Component({
@@ -41,7 +41,13 @@ export class ModifierArticleComponent implements OnInit {
   submit(): void {
     console.log(this.form.value);
     this.articlesService.update(this.id, this.form.value).subscribe((res: any) => {
-      alert("Data Updated Successfully ☺");
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Data Updated Successfully ☺",
+        showConfirmButton: false,
+        timer: 1500
+      });
       this.router.navigateByUrl('/article/afficher'); 
     });
   }

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Comment } from '../comment';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-article',
@@ -89,7 +90,14 @@ export class ArticleComponent implements OnInit {
       this.articlesService.create(newArticle as Article).subscribe({
         next: (res: Article) => {
           console.log('Réponse de l\'API:', res);
-          alert("Article ajouté avec succès ☺");
+          
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Article ajouté avec succès ☺",
+            showConfirmButton: false,
+            timer: 1500
+          });
           this.form.reset();
           this.articles.push(newArticle as Article);
           if (isPlatformBrowser(this.platformId)) {
@@ -117,7 +125,14 @@ export class ArticleComponent implements OnInit {
     this.articlesService.delete(id).subscribe({
       next: () => {
         this.articles = this.articles.filter(article => article.id !== id);
-        alert('Article supprimé avec succès !');
+        
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Article supprimé avec succès !",
+          showConfirmButton: false,
+          timer: 1500
+        });
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('articles', JSON.stringify(this.articles));
         }
