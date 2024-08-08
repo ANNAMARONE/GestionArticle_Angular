@@ -2,7 +2,9 @@
 <div *ngIf="!article">
   <p>Chargement des détails de l'article...</p>
 </div>
+
 <div class="container" *ngIf="article">
+  <div class="détail">
   <div>
     <strong>ID:</strong><p>{{article.id}}</p>
   </div>
@@ -12,7 +14,7 @@
   <div>
     <strong>Post:</strong><p>{{article.body}}</p>
   </div>
-  
+</div>
   <button class="btn btn-secondary" type="button" (click)="loadComments(article.id)">Afficher les Commentaires</button>
 
 <html lang="en">
@@ -47,7 +49,7 @@
         </div>
         <div class="meta-date">
           <span class="date">{{article.id}}</span>
-          <span class="month">APR</span>
+          <span class="month">ART</span>
         </div>
       </div>
    

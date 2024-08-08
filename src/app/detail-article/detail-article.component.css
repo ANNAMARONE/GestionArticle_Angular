@@ -4,7 +4,7 @@ body {
     font-weight: 400;
   }
   
-  /*===== Vertical Timeline =====*/
+ 
   #conference-timeline {
     position: relative;
     max-width: 920px;
@@ -133,9 +133,19 @@ body {
     font-size: 18px;
     line-height: 10px;
   }
-  /*===== // Vertical Timeline =====*/
   
-  /*===== Resonsive Vertical Timeline =====*/
+  .détail{
+    background-color: #00b0bd;
+    border: 1px solid white;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    
+
+  }
+  .détail strong{
+color: #242424;
+  }
   @media only screen and (max-width: 830px) {
     #conference-timeline .timeline-start,
     #conference-timeline .timeline-end {
